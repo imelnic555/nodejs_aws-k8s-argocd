@@ -15,8 +15,8 @@ on:
         SERVICE_ACCOUNT_NAMESPACE: kube-system
         SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
         GHPTOKEN: ${{ secrets.GHPTOKEN }}
-  steps:
 
+  steps:
       #  Checkout Repository Code
       - name: Checkout Code
         uses: actions/checkout@v3
