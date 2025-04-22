@@ -12,20 +12,20 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodejs-app
+  name: demo
   namespace: demo-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nodejs-app
+      app: demo
   template:
     metadata:
       labels:
-        app: nodejs-app
+        app: demo
     spec:
       containers:
-        - name: nodejs-app
+        - name: demo
           image: AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/nodejs-app:latest
           ports:
             - containerPort: 3000
@@ -41,11 +41,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs-service
+  name: demo-service
   namespace: demo-app
 spec:
   selector:
-    app: nodejs-app
+    app: demo
   ports:
     - protocol: TCP
       port: 80
@@ -58,7 +58,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nodejs-ingress
+  name: demo-ingress
   namespace: demo-app
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -70,6 +70,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: nodejs-service
+                name: demo-service
                 port:
                   number: 80
