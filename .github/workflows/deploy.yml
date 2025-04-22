@@ -20,7 +20,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Optional: Get AWS Account ID
+      # Optional: Get AWS Account ID1
       # - name: Retrieve AWS Account ID
       #   id: aws_account
       #   run: |
