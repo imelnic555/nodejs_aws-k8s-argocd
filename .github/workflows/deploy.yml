@@ -15,18 +15,20 @@ jobs:
       SERVICE_ACCOUNT_NAMESPACE: kube-system
       SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
       GHPTOKEN: ${{ secrets.GHPTOKEN }}
-
     steps:
+    
+      #  Checkout Repository Code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Optional: Get AWS Account ID1
-      # - name: Retrieve AWS Account ID
+      # - name: Retrieve AWS Account ID111q11q11112q111111112
       #   id: aws_account
       #   run: |
       #     ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
       #     echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV
 
+ 
+      #  Step 2: Configure AWS Credentials using GitHub Secrets
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
