@@ -15,7 +15,6 @@ jobs:
       SERVICE_ACCOUNT_NAMESPACE: kube-system
       SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
       GHPTOKEN: ${{ secrets.GHPTOKEN }}
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
