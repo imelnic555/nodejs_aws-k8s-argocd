@@ -1,4 +1,4 @@
-name: Deploy EKS & ArgoCD
+name: Deploy EKS  ArgoCD
 
 on:
   push:
@@ -17,18 +17,11 @@ jobs:
       GHPTOKEN: ${{ secrets.GHPTOKEN }}
     steps:
     
-      # 1️⃣ Checkout Repository Code
+      # Checkout Repository Code
       - name: Checkout Code
         uses: actions/checkout@v3
-
-      # - name: Retrieve AWS Account ID111q11q11112q111111112
-      #   id: aws_account
-      #   run: |
-      #     ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
-      #     echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV
-
  
-      #  Step 2: Configure AWS Credentials using GitHub Secrets
+      #  Step 2 Configure AWS Credentials using GitHub Secrets
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
