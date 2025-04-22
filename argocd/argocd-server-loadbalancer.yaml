@@ -16,7 +16,7 @@ spec:
   project: default
   source:
     repoURL: "https://github.com/imelnic555/react_nodejs_playwright.git"
-    targetRevision: "main"
+    targetRevision: "feature/full_stack_express"
     path: "k8s"               # Update if your manifests live in a different folder
   destination:
     server: "https://kubernetes.default.svc"
