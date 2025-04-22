@@ -17,7 +17,7 @@ jobs:
       GHPTOKEN: ${{ secrets.GHPTOKEN }}
     steps:
     
-      # 1️⃣ Checkout Repository Code
+      #  Checkout Repository Code
       - name: Checkout Code
         uses: actions/checkout@v3
 
