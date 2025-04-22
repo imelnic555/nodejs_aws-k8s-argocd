@@ -111,6 +111,22 @@ jobs:
     
           echo "❌ Error: ArgoCD pods failed to reach 1/1 READY state."
 
+      # 3️⃣ Add inbound rule to ELB SG (for TCP 8080 access)
+      - name: 🔐 Add Inbound Rule for ArgoCD (port 8080)
+        run: |
+          ELB_SG_ID="sg-09358f57790791c8e"
+          WORKER_NODE_SG_ID="sg-04cc4cd3cd810ab48"
+      
+          aws ec2 authorize-security-group-ingress \
+            --group-id "$ELB_SG_ID" \
+            --protocol tcp \
+            --port 8080 \
+            --source-group "$WORKER_NODE_SG_ID"
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
       # ✅ Install eksctl (Required for Load Balancer Controller)
       - name: Install eksctl
         run: |
