@@ -8,17 +8,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      AWS_REGION: us-west-2
-      CLUSTER_NAME: my-cluster
-      POLICY_NAME: AmazonEKSLoadBalancerController
-      SERVICE_ACCOUNT_NAMESPACE: kube-system
-      SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
-      GHPTOKEN: ${{ secrets.GHPTOKEN }}
+
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        env:
+          AWS_REGION: us-west-2
+          CLUSTER_NAME: my-cluster
+          POLICY_NAME: AmazonEKSLoadBalancerController
+          SERVICE_ACCOUNT_NAMESPACE: kube-system
+          SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
+          GHPTOKEN: ${{ secrets.GHPTOKEN }}
 
       # Optional: Get AWS Account ID
       # - name: Retrieve AWS Account ID
