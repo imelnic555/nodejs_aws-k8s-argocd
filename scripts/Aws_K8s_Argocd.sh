@@ -9,6 +9,9 @@ GITHUB_USERNAME="imelnic555"
 GITHUB_TOKEN="${GHPTOKEN}"  # expects GITHUB_TOKEN set in environment
 GITHUB_REPO="https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/react_nodejs_plawyright.git"
 CLONE_DIR="nodejs-app"
+DEFAULT_BRANCH="main"
+BRANCH_NAME="${1:-feature/full_stack_express}"  # Use argument, else default to your branch
+
 
 ############################################
 # Ensure AWS credentials are set
@@ -38,7 +41,7 @@ if [ -d "$CLONE_DIR" ]; then
     git pull origin main
     cd ..
 else
-    git clone "$GITHUB_REPO" "$CLONE_DIR"
+    git clone --branch "$BRANCH_NAME" "$GITHUB_REPO" "$CLONE_DIR"
 fi
 
 ############################################
