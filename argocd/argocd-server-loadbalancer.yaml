@@ -6,9 +6,9 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - name: https
-      port: 443
-      targetPort: 8080  # This should match the containerPort in ArgoCD's pod
+    - name: http
+      port: 80
+      targetPort: 8080
   selector:
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
