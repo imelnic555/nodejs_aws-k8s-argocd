@@ -5,28 +5,29 @@ on:
     branches:
       - master
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      env:
-        AWS_REGION: us-west-2
-        CLUSTER_NAME: my-cluster
-        POLICY_NAME: AmazonEKSLoadBalancerController
-        SERVICE_ACCOUNT_NAMESPACE: kube-system
-        SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
-        GHPTOKEN: ${{ secrets.GHPTOKEN }}
-
-  steps:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-west-2
+      CLUSTER_NAME: my-cluster
+      POLICY_NAME: AmazonEKSLoadBalancerController
+      SERVICE_ACCOUNT_NAMESPACE: kube-system
+      SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
+      GHPTOKEN: ${{ secrets.GHPTOKEN }}
+    steps:
+    
       #  Checkout Repository Code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # - name: Retrieve AWS Account ID1111112
+      # - name: Retrieve AWS Account ID111q11q11112q111111112
       #   id: aws_account
       #   run: |
       #     ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
       #     echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV
 
+ 
  
       #  Step 2: Configure AWS Credentials using GitHub Secrets
       - name: Configure AWS Credentials
