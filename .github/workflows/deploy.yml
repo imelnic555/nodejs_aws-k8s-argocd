@@ -23,6 +23,7 @@ jobs:
           SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
           GHPTOKEN: ${{ secrets.GHPTOKEN }}
 
+
       # Optional: Get AWS Account ID
       # - name: Retrieve AWS Account ID
       #   id: aws_account
