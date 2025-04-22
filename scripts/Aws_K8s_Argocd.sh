@@ -6,7 +6,7 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>/de
 ECR_REPO_NAME="nodejs-app"
 DOCKER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME:latest"
 GITHUB_USERNAME="imelnic555"
-GITHUB_TOKEN="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"
+GITHUB_TOKEN="${GHPTOKEN}"  # expects GITHUB_TOKEN set in environment
 GITHUB_REPO="https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/react_nodejs_plawyright.git"
 CLONE_DIR="nodejs-app"
 
