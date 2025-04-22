@@ -578,7 +578,7 @@ jobs:
       
           echo "✅ Preflight check complete. Proceeding to next step..."
 
-      - name: Fallback: Port-forward and login to ArgoCD
+      - name: Fallback Port-forward and login to ArgoCD
       run: |
         echo "⚠️ Using port-forwarding as a fallback..."
         
