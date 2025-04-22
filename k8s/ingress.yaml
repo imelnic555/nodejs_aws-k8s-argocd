@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nodejs-ingress
+  namespace: demo-app
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
@@ -12,6 +13,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: nodejs-service
+                name: demo  # ← this must match your Service
                 port:
                   number: 80
