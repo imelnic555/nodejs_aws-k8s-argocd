@@ -540,26 +540,26 @@ jobs:
           echo "❌ ERROR: DNS resolution failed for $ARGOCD_SERVER"
           exit 1
 
-          - name: 🔍 ArgoCD LoadBalancer Preflight Checks
-          run: |
-            echo "🔍 ArgoCD LoadBalancer Preflight Checks"
+      - name: 🔍 ArgoCD LoadBalancer Preflight Checks
+        run: |
+          echo "🔍 ArgoCD LoadBalancer Preflight Checks"
         
-            echo "🔧 1. Check ArgoCD pods status:"
-            kubectl get pods -n argocd
-        
-            echo "🔧 2. Check ArgoCD services:"
-            kubectl get svc -n argocd
-        
-            echo "🔧 3. Describe argocd-server service:"
-            kubectl describe svc argocd-server -n argocd
-        
-            echo "🔧 4. Check endpoints:"
-            kubectl get endpoints -n argocd
-        
-            echo "🔧 5. Get events sorted by time:"
-            kubectl get events -n argocd --sort-by=.metadata.creationTimestamp
-        
-            echo "✅ Preflight check complete. Proceeding to next step..."
+          echo "🔧 1. Check ArgoCD pods status:"
+          kubectl get pods -n argocd
+      
+          echo "🔧 2. Check ArgoCD services:"
+          kubectl get svc -n argocd
+      
+          echo "🔧 3. Describe argocd-server service:"
+          kubectl describe svc argocd-server -n argocd
+      
+          echo "🔧 4. Check endpoints:"
+          kubectl get endpoints -n argocd
+      
+          echo "🔧 5. Get events sorted by time:"
+          kubectl get events -n argocd --sort-by=.metadata.creationTimestamp
+      
+          echo "✅ Preflight check complete. Proceeding to next step..."
 
 
 
