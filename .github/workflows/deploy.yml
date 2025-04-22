@@ -556,37 +556,7 @@ on:
 
           echo "❌ ERROR: DNS resolution failed for $ARGOCD_SERVER"
           exit 1
-
-      - name: 🔍 ArgoCD LoadBalancer Preflight Checks
-        run: |
-          echo "🔍 ArgoCD LoadBalancer Preflight Checks"
-        
-          echo "🔧 1. Check ArgoCD pods status:"
-          kubectl get pods -n argocd
-      
-          echo "🔧 2. Check ArgoCD services:"
-          kubectl get svc -n argocd
-      
-          echo "🔧 3. Describe argocd-server service:"
-          kubectl describe svc argocd-server -n argocd
-      
-          echo "🔧 4. Check endpoints:"
-          kubectl get endpoints -n argocd
-      
-          echo "🔧 5. Get events sorted by time:"
-          kubectl get events -n argocd --sort-by=.metadata.creationTimestamp
-      
-          echo "✅ Preflight check complete. Proceeding to next step..."
-
-      - name: Fallback Port-forward and login to ArgoCD
-      run: |
-        echo "⚠️ Using port-forwarding as a fallback..."
-        
-        echo "⏳ Starting kubectl port-forward..."
-        nohup kubectl port-forward svc/argocd-server -n argocd 8085:443 > /dev
-
-
-      
+     
       - name: Wait for LoadBalancer to Accept Connections
         run: |
           echo "🔄 Waiting for ArgoCD LoadBalancer to accept connections..."
