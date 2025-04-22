@@ -4,7 +4,7 @@ metadata:
   name: nodejs-service
 spec:
   selector:
-    app: nodejs-app
+    app: demo  # ✅ Matches deployment label
   ports:
     - protocol: TCP
       port: 80
