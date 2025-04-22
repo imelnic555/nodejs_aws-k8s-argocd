@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nodejs-app
+  labels:
+    app: nodejs-app
 spec:
   replicas: 2
   selector:
@@ -13,10 +15,10 @@ spec:
         app: nodejs-app
     spec:
       containers:
-        - name: nodejs-container
-          image: <YOUR_ECR_REPO_URI>:latest
-          ports:
-            - containerPort: 3000
-          env:
-            - name: NODE_ENV
-              value: "production"
+      - name: nodejs-container
+        image: <YOUR_ECR_IMAGE_URI>:latest  # 🛠️ Replace via GitHub Actions or ArgoCD
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
