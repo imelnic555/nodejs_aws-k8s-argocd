@@ -561,6 +561,14 @@ jobs:
       
           echo "✅ Preflight check complete. Proceeding to next step..."
 
+      - name: 🚪 Port-forward to ArgoCD server and test health
+        run: |
+          echo "⏳ Starting kubectl port-forward..."
+          nohup kubectl port-forward svc/argocd-server -n argocd 8080:8080 &
+          sleep 10
+      
+          echo "🧪 Testing ArgoCD server healthz endpoint..."
+          curl http://localhost:8080/healthz || echo "❌ ArgoCD server not responding"
 
 
       
