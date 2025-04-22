@@ -379,67 +379,6 @@ jobs:
       #     nslookup $ARGOCD_SERVER || (echo "❌ ERROR: DNS resolution failed." && exit 1)
 
 
-      # 3️⃣ Add inbound rule to ELB SG (for TCP 8085 access)
-      - name: Authorize ELB Ingress Rule from Worker Node SG
-        shell: bash
-        run: |
-          set -euo pipefail
-      
-          SERVICE_NAME="demo"
-          SERVICE_NAMESPACE="demo-app"
-          WORKER_NODE_SG_ID="sg-04cc4cd3cd810ab48"
-          TARGET_PORT=8085
-          MAX_RETRIES=15
-          RETRY_DELAY=6
-      
-          echo "⏳ Waiting for LoadBalancer hostname to become available..."
-          for i in $(seq 1 $MAX_RETRIES); do
-            ELB_NAME=$(kubectl get svc "$SERVICE_NAME" -n "$SERVICE_NAMESPACE" -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" || true)
-            if [[ -n "$ELB_NAME" ]]; then
-              echo "✅ ELB hostname found: $ELB_NAME"
-              break
-            fi
-            echo "🔁 Not ready yet (attempt $i/$MAX_RETRIES). Retrying in $RETRY_DELAY seconds..."
-            sleep "$RETRY_DELAY"
-          done
-      
-          if [[ -z "$ELB_NAME" ]]; then
-            echo "❌ LoadBalancer hostname not found after $MAX_RETRIES attempts. Exiting."
-            exit 1
-          fi
-      
-          LB_ARN=$(aws elbv2 describe-load-balancers \
-            --query "LoadBalancers[?contains(DNSName, '$ELB_NAME')].LoadBalancerArn" \
-            --output text)
-      
-          if [[ -z "$LB_ARN" ]]; then
-            echo "❌ Could not find LoadBalancer ARN for hostname: $ELB_NAME"
-            exit 1
-          fi
-      
-          ELB_SG_ID=$(aws elbv2 describe-load-balancers \
-            --load-balancer-arns "$LB_ARN" \
-            --query "LoadBalancers[0].SecurityGroups[0]" \
-            --output text)
-      
-          if [[ -z "$ELB_SG_ID" ]]; then
-            echo "❌ Could not retrieve Security Group from LoadBalancer."
-            exit 1
-          fi
-      
-          echo "🔐 Authorizing ingress from $WORKER_NODE_SG_ID to $ELB_SG_ID on port $TARGET_PORT..."
-          aws ec2 authorize-security-group-ingress \
-            --group-id "$ELB_SG_ID" \
-            --protocol tcp \
-            --port "$TARGET_PORT" \
-            --source-group "$WORKER_NODE_SG_ID"
-      
-          echo "✅ Ingress rule added successfully."
-
-      - name: Wait for ArgoCD Readiness
-        run: |
-          kubectl rollout status deployment/argocd-server -n argocd --timeout=120s || \
-          (echo "❌ ERROR: ArgoCD deployment is not ready" && exit 1)
 
       # - name: Log into ArgoCD
       #   run: |
@@ -566,6 +505,67 @@ jobs:
           exit 1
 
 
+      # 3️⃣ Add inbound rule to ELB SG (for TCP 8085 access)
+      - name: Authorize ELB Ingress Rule from Worker Node SG
+        shell: bash
+        run: |
+          set -euo pipefail
+      
+          SERVICE_NAME="demo"
+          SERVICE_NAMESPACE="demo-app"
+          WORKER_NODE_SG_ID="sg-04cc4cd3cd810ab48"
+          TARGET_PORT=8085
+          MAX_RETRIES=15
+          RETRY_DELAY=6
+      
+          echo "⏳ Waiting for LoadBalancer hostname to become available..."
+          for i in $(seq 1 $MAX_RETRIES); do
+            ELB_NAME=$(kubectl get svc "$SERVICE_NAME" -n "$SERVICE_NAMESPACE" -o jsonpath="{.status.loadBalancer.ingress[0].hostname}" || true)
+            if [[ -n "$ELB_NAME" ]]; then
+              echo "✅ ELB hostname found: $ELB_NAME"
+              break
+            fi
+            echo "🔁 Not ready yet (attempt $i/$MAX_RETRIES). Retrying in $RETRY_DELAY seconds..."
+            sleep "$RETRY_DELAY"
+          done
+      
+          if [[ -z "$ELB_NAME" ]]; then
+            echo "❌ LoadBalancer hostname not found after $MAX_RETRIES attempts. Exiting."
+            exit 1
+          fi
+      
+          LB_ARN=$(aws elbv2 describe-load-balancers \
+            --query "LoadBalancers[?contains(DNSName, '$ELB_NAME')].LoadBalancerArn" \
+            --output text)
+      
+          if [[ -z "$LB_ARN" ]]; then
+            echo "❌ Could not find LoadBalancer ARN for hostname: $ELB_NAME"
+            exit 1
+          fi
+      
+          ELB_SG_ID=$(aws elbv2 describe-load-balancers \
+            --load-balancer-arns "$LB_ARN" \
+            --query "LoadBalancers[0].SecurityGroups[0]" \
+            --output text)
+      
+          if [[ -z "$ELB_SG_ID" ]]; then
+            echo "❌ Could not retrieve Security Group from LoadBalancer."
+            exit 1
+          fi
+      
+          echo "🔐 Authorizing ingress from $WORKER_NODE_SG_ID to $ELB_SG_ID on port $TARGET_PORT..."
+          aws ec2 authorize-security-group-ingress \
+            --group-id "$ELB_SG_ID" \
+            --protocol tcp \
+            --port "$TARGET_PORT" \
+            --source-group "$WORKER_NODE_SG_ID"
+      
+          echo "✅ Ingress rule added successfully."
+
+      - name: Wait for ArgoCD Readiness
+        run: |
+          kubectl rollout status deployment/argocd-server -n argocd --timeout=120s || \
+          (echo "❌ ERROR: ArgoCD deployment is not ready" && exit 1)
 
       - name: Wait for ArgoCD LoadBalancer to be Reachable
         run: |
