@@ -111,8 +111,8 @@ jobs:
     
           echo "❌ Error: ArgoCD pods failed to reach 1/1 READY state."
 
-      # 3️⃣ Add inbound rule to ELB SG (for TCP 8080 access)
-      - name: 🔐 Add Inbound Rule for ArgoCD (port 8080)
+      # 3️⃣ Add inbound rule to ELB SG (for TCP 8085 access)
+      - name: 🔐 Add Inbound Rule for ArgoCD (port 8085)
         run: |
           ELB_SG_ID="sg-09358f57790791c8e"
           WORKER_NODE_SG_ID="sg-04cc4cd3cd810ab48"
@@ -120,7 +120,8 @@ jobs:
           aws ec2 authorize-security-group-ingress \
             --group-id "$ELB_SG_ID" \
             --protocol tcp \
-            --port 8080 \
+            --port 8085
+            \
             --source-group "$WORKER_NODE_SG_ID"
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
