@@ -2,8 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo
-  labels:
-    app: demo
+  namespace: demo-app
 spec:
   replicas: 2
   selector:
@@ -15,7 +14,10 @@ spec:
         app: demo
     spec:
       containers:
-      - name: demo
-        image: your-docker-image:latest
-        ports:
-        - containerPort: 3000
+        - name: demo-container
+          image: AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/nodejs-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
