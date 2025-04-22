@@ -1,14 +1,29 @@
+# 1️⃣ Ensure the namespace for your app exists (ArgoCD will create it if missing):
 apiVersion: v1
-kind: Service
+kind: Namespace
 metadata:
-  name: argocd-server
+  name: demo-app
+
+---
+# 2️⃣ ArgoCD Application for your React + Node.js + Playwright project
+#    Points at your GitHub repo “react_nodejs_playwright” and syncs everything under the k8s/ folder
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: react-nodejs-playwright
   namespace: argocd
 spec:
-  type: LoadBalancer
-  ports:
-    - name: https
-      port: 443
-      targetPort: 8080
-  selector:
-    app.kubernetes.io/name: argocd-server
-    app.kubernetes.io/part-of: argocd
+  project: default
+  source:
+    repoURL: "https://github.com/imelnic555/react_nodejs_playwright.git"
+    targetRevision: "main"
+    path: "k8s"               # Update if your manifests live in a different folder
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "demo-app"
+  syncPolicy:
+    automated:
+      prune: true             # Delete resources no longer in Git
+      selfHeal: true          # Repair out-of-band drifts
+    syncOptions:
+      - CreateNamespace=true  # Auto-create demo-app if it doesn’t already exist
