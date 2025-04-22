@@ -17,17 +17,23 @@ jobs:
       GHPTOKEN: ${{ secrets.GHPTOKEN }}
 
     steps:
-      #  Step 1: Set up Terraform for Infrastructure Provisioning
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      #  Step 3: Set up Terraform for Infrastructure Provisioning
+      # Optional: Get AWS Account ID
+      # - name: Retrieve AWS Account ID
+      #   id: aws_account
+      #   run: |
+      #     ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+      #     echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
+
 
       #  Step 3: Set up Terraform for Infrastructure Provisioning
       - name: Set up Terraform
