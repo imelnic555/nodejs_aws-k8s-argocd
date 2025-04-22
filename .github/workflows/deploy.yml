@@ -263,8 +263,7 @@ jobs:
             --docker-server="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com" \
             --docker-username=AWS \
             --docker-password="$(aws ecr get-login-password --region ${{ secrets.AWS_REGION }})" \
-            --docker-email=none
-
+            --docker-email=none     
 
       # ✅ Step 11: Apply LoadBalancer for ArgoCD Server
       - name: Apply LoadBalancer to ArgoCD Server
