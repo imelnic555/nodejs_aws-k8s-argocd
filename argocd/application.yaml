@@ -1,18 +1,75 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+############################################
+# Namespace Configuration for Node.js App
+############################################
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-app
+---
+############################################
+# Deployment for Node.js App from AWS ECR
+############################################
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: nodejs-app
-  namespace: argocd
+  namespace: demo-app
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/YOUR-USERNAME/YOUR-NODE-REPO.git
-    targetRevision: main
-    path: k8s
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: demo-app
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+        - name: nodejs-app
+          image: AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/nodejs-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+      imagePullSecrets:
+        - name: ecr-secret
+---
+############################################
+# Service to Expose Node.js App
+############################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-service
+  namespace: demo-app
+spec:
+  selector:
+    app: nodejs-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+---
+############################################
+# Optional Ingress (if needed)
+############################################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nodejs-ingress
+  namespace: demo-app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nodejs-service
+                port:
+                  number: 80
