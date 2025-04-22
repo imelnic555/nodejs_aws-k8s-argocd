@@ -5,17 +5,17 @@ on:
     branches:
       - master
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    env:
-      AWS_REGION: us-west-2
-      CLUSTER_NAME: my-cluster
-      POLICY_NAME: AmazonEKSLoadBalancerController
-      SERVICE_ACCOUNT_NAMESPACE: kube-system
-      SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
-      GHPTOKEN: ${{ secrets.GHPTOKEN }}
-steps:
+  jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      env:
+        AWS_REGION: us-west-2
+        CLUSTER_NAME: my-cluster
+        POLICY_NAME: AmazonEKSLoadBalancerController
+        SERVICE_ACCOUNT_NAMESPACE: kube-system
+        SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
+        GHPTOKEN: ${{ secrets.GHPTOKEN }}
+  steps:
 
       #  Checkout Repository Code
       - name: Checkout Code
