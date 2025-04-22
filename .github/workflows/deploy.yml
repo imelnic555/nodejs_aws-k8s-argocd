@@ -16,7 +16,6 @@ jobs:
       SERVICE_ACCOUNT_NAME: aws-load-balancer-controller
       GHPTOKEN: ${{ secrets.GHPTOKEN }}
     steps:
-      # Checkout Repository Code
       - name: Checkout Code
         uses: actions/checkout@v3
 
