@@ -101,6 +101,13 @@ jobs:
           helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
             --namespace ingress-nginx \
             --create-namespace
+      - name: ⏱️ Wait for NGINX Admission Webhook
+        run: |
+          echo "Waiting for ingress-nginx admission webhook to become ready..."
+          kubectl wait --namespace ingress-nginx \
+            --for=condition=Available deployment/ingress-nginx-controller \
+            --timeout=120s
+          kubectl get svc ingress-nginx-controller-admission -n ingress-nginx
 
       - name: Apply ArgoCD Ingress
         run: |
