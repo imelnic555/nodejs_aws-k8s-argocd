@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: argocd.example.com  # Replace with your actual DNS or use IP for testing
+    - host: argocd.{{NODE_IP}}.nip.io  # Replace {{NODE_IP}} or render it in script
       http:
         paths:
           - path: /
